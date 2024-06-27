@@ -39,7 +39,7 @@ def mock_env(monkeypatch):
 
 @pytest.fixture
 def mock_api_key():
-    with patch('src.validate.get_api_key', return_value=FAKE_API_KEY) as _mock:
+    with patch("src.validate.get_api_key", return_value=FAKE_API_KEY) as _mock:
         yield _mock
 
 

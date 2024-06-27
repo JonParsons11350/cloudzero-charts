@@ -28,41 +28,39 @@ def check_service_availability(
 
 
 def get_api_key():
-    secret_file_path = '/etc/config/prometheus/secrets/value'
+    secret_file_path = "/etc/config/prometheus/secrets/value"
 
     try:
-        with open(secret_file_path, 'r') as file:
+        with open(secret_file_path, "r") as file:
             secret_value = file.read().strip()
         return secret_value
     except FileNotFoundError:
         print(f"Secret file {secret_file_path} not found.", file=sys.stderr)
         return None
-    
+
 
 def check_external_validation_endpoint() -> Tuple[str, str]:
     host: str = os.getenv("CZ_HOST", "api.cloudzero.com")
     api_key = get_api_key()
-    
+
     # Use for testing
     # host = "dev-api.cloudzero.com"
 
     if not host:
-        print("Failed to find a host" , file=sys.stderr )
+        print("Failed to find a host", file=sys.stderr)
         return ("check_external_validation_endpoint", "failure")
 
     if not api_key:
-        print("Failed to find an api key" , file=sys.stderr )
+        print("Failed to find an api key", file=sys.stderr)
         return ("check_external_validation_endpoint", "failure")
 
     # Future: Hit an endpoint that validates more of the data
     # For now this just validates that the API key is valid
     url: str = f"https://{host}/v2/insights"
 
-    print(f"Checking external connectivity to {url}" , file=sys.stderr )
+    print(f"Checking external connectivity to {url}", file=sys.stderr)
 
-    headers = {
-        "Authorization": f"Bearer {api_key}"
-    }
+    headers = {"Authorization": f"Bearer {api_key}"}
     return check_service_availability(
         url, "check_external_validation_endpoint", headers
     )
