@@ -43,9 +43,6 @@ def check_external_validation_endpoint() -> Tuple[str, str]:
     host: str = os.getenv("CZ_HOST", "api.cloudzero.com")
     api_key = get_api_key()
 
-    # Use for testing
-    # host = "dev-api.cloudzero.com"
-
     if not host:
         print("Failed to find a host", file=sys.stderr)
         return ("check_external_validation_endpoint", "failure")
